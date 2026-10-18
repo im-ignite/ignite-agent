@@ -1,0 +1,48 @@
+{
+  "name": "ignite-agent",
+  "version": "1.0.0",
+  "description": "Autonomous AI DevOps & Software Engineering Agent. Multi-Agent Swarm, GitShield, and Semantic Codebase Indexing.",
+  "main": "bin/ignite.js",
+  "bin": {
+    "ignite": "./bin/ignite.js"
+  },
+  "scripts": {
+    "start": "node ./bin/ignite.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/im-ignite/ignite-agent.git"
+  },
+  "keywords": [
+    "ai",
+    "agent",
+    "devops",
+    "copilot",
+    "autonomous",
+    "coding-agent",
+    "gemini",
+    "groq",
+    "swarm",
+    "mcp",
+    "cli"
+  ],
+  "author": "IGNITE",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/im-ignite/ignite-agent/issues"
+  },
+  "homepage": "https://github.com/im-ignite/ignite-agent#readme",
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "preferGlobal": true,
+  "files": [
+    "bin",
+    "ignite_agent.py",
+    "requirements.txt",
+    "README.md",
+    "LICENSE",
+    ".ignite_mcp.example.json",
+    ".env.example"
+  ]
+}

@@ -137,24 +137,35 @@ Open `.env` and fill in your keys. *(Note: `.env` is already listed in `.gitigno
 
 ## 🚀 Quickstart
 
-### Prerequisites
-- Python **3.10** or higher
-- Windows 10/11 (PowerShell)
+### Method 1: Global CLI via npm (Recommended)
 
-### Installation
-Clone the repository:
-```powershell
+Install globally from anywhere in one command:
+```bash
+npm install -g ignite-agent
+```
+*(Or run immediately with zero installation: `npx ignite-agent`)*
+
+Then open any project folder and launch:
+```bash
+ignite
+```
+
+> **🎉 Interactive First-Time Setup Wizard:**  
+> On first launch, IGNITE automatically launches an onboarding wizard that asks for whichever API keys you have (Google Gemini, Groq, Mistral, Cohere, OpenRouter). You do **NOT** need all keys — entering just one (e.g. free Gemini or free Groq) gets you started instantly! You can re-run this setup anytime using:
+> ```bash
+> ignite setup
+> # or inside the chat:
+> IGNITE> /setup
+> ```
+
+---
+
+### Method 2: Clone via Git & Python
+
+```bash
 git clone https://github.com/im-ignite/ignite-agent.git
 cd ignite-agent
-```
-
-*(Optional but recommended)* Install `rich` for the visual terminal interface and tables:
-```powershell
 pip install -r requirements.txt
-```
-
-### Launch IGNITE
-```powershell
 python ignite_agent.py
 ```
 

@@ -341,6 +341,112 @@ def get_env_key(var_name: str) -> Optional[str]:
                 pass
     return None
 
+def load_dot_env_files():
+    """Load key-value pairs from ~/.ignite/.env and ./.env into os.environ if not present."""
+    for p in [Path.home() / ".ignite" / ".env", Path(".env")]:
+        if p.exists() and p.is_file():
+            try:
+                for line in p.read_text(encoding="utf-8").splitlines():
+                    line = line.strip()
+                    if line and not line.startswith("#") and "=" in line:
+                        k, v = line.split("=", 1)
+                        k = k.strip()
+                        v = v.strip().strip("\"'")
+                        if k and k not in os.environ:
+                            os.environ[k] = v
+            except Exception:
+                pass
+
+load_dot_env_files()
+
+def run_first_time_setup() -> bool:
+    """Interactive onboarding wizard to collect available API keys on first launch."""
+    print(f"\n{C.BCYN}╔══════════════════════════════════════════════════════════════════════════╗{C.RST}")
+    print(f"{C.BCYN}║           🔥 WELCOME TO IGNITE V3 PRO — FIRST-TIME SETUP                 ║{C.RST}")
+    print(f"{C.BCYN}╚══════════════════════════════════════════════════════════════════════════╝{C.RST}")
+    print(f"\n{C.BYEL}IGNITE requires at least ONE AI provider API key to get started.{C.RST}")
+    print(f"{C.DIM}You do NOT need all of them — just provide whatever keys you have!{C.RST}")
+    print(f"{C.GRY}(Press Enter to skip any key you don't have)\n{C.RST}")
+
+    key_prompts = [
+        ("GEMINI_API_KEY", "Google Gemini (Recommended & Free)", "https://aistudio.google.com/"),
+        ("GROQ_API_KEY", "Groq Cloud (Free Ultra-Fast)", "https://console.groq.com/"),
+        ("MISTRAL_API_KEY", "Mistral AI (Codestral)", "https://console.mistral.ai/"),
+        ("COHERE_API_KEY", "Cohere (Command R+)", "https://dashboard.cohere.com/"),
+        ("OPENROUTER_API_KEY", "OpenRouter (100+ Models)", "https://openrouter.ai/"),
+    ]
+
+    ignite_dir = Path.home() / ".ignite"
+    ignite_dir.mkdir(parents=True, exist_ok=True)
+    env_file = ignite_dir / ".env"
+
+    env_map = {}
+    if env_file.exists():
+        try:
+            for line in env_file.read_text(encoding="utf-8").splitlines():
+                if "=" in line and not line.strip().startswith("#"):
+                    k, v = line.split("=", 1)
+                    env_map[k.strip()] = v.strip().strip("\"'")
+        except Exception:
+            pass
+
+    saved_any = False
+    for var_name, label, url in key_prompts:
+        cur_val = get_env_key(var_name) or env_map.get(var_name)
+        status_hint = f"{C.GRN}(currently set){C.RST}" if cur_val else f"{C.DIM}(free at {url}){C.RST}"
+        print(f"  {C.BCYN}▸ {label}{C.RST} {status_hint}")
+        try:
+            val = input(f"    Enter API Key (or Enter to skip): ").strip()
+        except (KeyboardInterrupt, EOFError):
+            print("\nSetup cancelled.")
+            return False
+
+        if val:
+            os.environ[var_name] = val
+            env_map[var_name] = val
+            saved_any = True
+            if sys.platform == "win32":
+                try:
+                    subprocess.run(
+                        ["powershell", "-NoProfile", "-NonInteractive", "-Command",
+                         f'[Environment]::SetEnvironmentVariable("{var_name}", "{val}", "User")'],
+                        capture_output=True, timeout=5
+                    )
+                except Exception:
+                    pass
+            print(f"    {C.BGRN}✔ Saved {var_name}{C.RST}\n")
+        elif cur_val:
+            saved_any = True
+            print(f"    {C.GRY}Kept existing {var_name}{C.RST}\n")
+        else:
+            print(f"    {C.DIM}Skipped.{C.RST}\n")
+
+    if env_map:
+        try:
+            content = "\n".join(f'{k}="{v}"' for k, v in env_map.items())
+            env_file.write_text(content, encoding="utf-8")
+        except Exception:
+            pass
+
+    if saved_any:
+        print(f"{C.BGRN}🎉 Setup Complete! Your API keys have been saved securely.{C.RST}")
+        print(f"{C.GRY}Keys saved to {env_file} and Windows User Environment.{C.RST}\n")
+        return True
+    else:
+        print(f"{C.YEL}⚠ No API keys were configured.{C.RST}")
+        print(f"{C.GRY}You can run 'ignite setup' anytime to configure keys.{C.RST}\n")
+        return False
+
+# Check for CLI flags: --version / -v
+if any(arg in sys.argv for arg in ["--version", "-v", "version"]):
+    print("🔥 IGNITE V3 PRO v1.0.0")
+    sys.exit(0)
+
+# Check for explicit setup CLI command: ignite setup / ignite --setup
+if any(arg in sys.argv for arg in ["setup", "--setup", "init", "--init"]):
+    run_first_time_setup()
+    sys.exit(0)
+
 def build_providers() -> List[Provider]:
     providers = []
     for p in PROVIDER_DEFS:
@@ -361,9 +467,14 @@ def build_providers() -> List[Provider]:
 PROVIDERS: List[Provider] = build_providers()
 
 if not PROVIDERS:
-    print(f"\n{C.BRED}⚠  FATAL: No API keys found. Set at least one of:{C.RST}")
-    for p in PROVIDER_DEFS:
-        print(f"  {C.YEL}{p['env_key']}{C.RST} → {p['name']}")
+    # First time launch onboarding wizard
+    ok = run_first_time_setup()
+    if ok:
+        PROVIDERS = build_providers()
+
+if not PROVIDERS:
+    print(f"\n{C.BRED}⚠  FATAL: No API keys configured. Set at least one key to use IGNITE.{C.RST}")
+    print(f"Run: {C.BCYN}ignite setup{C.RST} to configure keys.\n")
     sys.exit(1)
 
 
@@ -3759,6 +3870,14 @@ def handle_slash(cmd: str, session: IgniteSession) -> bool:
             print(f"{C.GRY}Commands: /mcp list | /mcp status | /mcp init | /mcp call <srv> <tool> <json>{C.RST}\n")
         return True
 
+    if verb in ("/setup", "/keys", "/config-keys"):
+        if run_first_time_setup():
+            new_provs = build_providers()
+            PROVIDERS.clear()
+            PROVIDERS.extend(new_provs)
+            print(f"{C.BGRN}✔ Active AI providers reloaded ({len(PROVIDERS)} providers active).{C.RST}")
+        return True
+
     if verb == "/tools":
         tools = list(TOOL_DISPATCH.keys()) + ["ask", "done"]
         if RICH:
@@ -3917,6 +4036,7 @@ def handle_slash(cmd: str, session: IgniteSession) -> bool:
 ║  /deploy [target]  Deploy to Cloud (railway/docker/fly/render)           ║
 ║  /scripts, /scratch List agent-synthesized helper scripts                ║
 ║  /model [num]      Interactive model selector (Arrow keys / 1,2)         ║
+║  /setup, /keys     Interactive API key configuration wizard              ║
 ║  /memory           Show episode history & context stats                  ║
 ║  /clear            Clear chat history (keep episodes)                    ║
 ║  /session save     Save current session snapshot                         ║
