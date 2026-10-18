@@ -1,0 +1,36 @@
+# ── Secrets & Environment Files (NEVER COMMIT) ──
+.env
+*.env
+.env.local
+.env.*.local
+
+# ── IGNITE Scratch & Sandboxes ──
+.ignite_scratch/
+*.db
+*.sqlite
+*.sqlite3
+
+# ── Local machine MCP configs (contain absolute local paths) ──
+.ignite_mcp.json
+
+# ── Python bytecode & cache ──
+__pycache__/
+*.py[cod]
+*$py.class
+*.spec
+*.egg-info/
+dist/
+build/
+
+# ── Virtual Environments ──
+venv/
+.venv/
+env/
+ENV/
+
+# ── IDE & OS metadata ──
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.swp

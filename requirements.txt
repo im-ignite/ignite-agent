@@ -1,0 +1,5 @@
+# 🔥 IGNITE V3 PRO Dependencies
+# Note: IGNITE runs out of the box with zero external dependencies on standard Python 3.10+.
+# Installing `rich` is recommended to enable the live interactive terminal UI, panels, tables, and swarm boards.
+
+rich>=13.0.0
