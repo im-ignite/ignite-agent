@@ -4,7 +4,7 @@
   "description": "Autonomous AI DevOps & Software Engineering Agent. Multi-Agent Swarm, GitShield, and Semantic Codebase Indexing.",
   "main": "bin/ignite.js",
   "bin": {
-    "ignite": "./bin/ignite.js"
+    "ignite": "bin/ignite.js"
   },
   "scripts": {
     "start": "node ./bin/ignite.js"
