@@ -1,166 +1,61 @@
-# 🔥 IGNITE V3 PRO — Autonomous AI DevOps & Engineering Agent
+<div align="center">
 
-> **Enterprise-Grade Autonomous AI Software Engineer & DevOps Partner.**  
-> Multi-Model Failover · Multi-Agent Swarm Orchestrator · GitShield Sandboxing · Semantic BM25+AST Codebase Indexer · Model Context Protocol (MCP) · Live Web Dashboard · Self-Healing Test Runner.
+<img src="assets/banner.svg" alt="IGNITE V3 PRO — Autonomous AI Engineering Agent" width="100%">
 
-[![Python](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Architecture: Multi--Agent Swarm](https://img.shields.io/badge/Architecture-Multi--Agent%20Swarm-green.svg)](#-multi-agent-swarm-orchestrator)
-[![Zero External Dependencies](https://img.shields.io/badge/Dependencies-Zero%20Mandatory-brightgreen.svg)](#-quickstart)
+<br>
 
----
+**An AI engineer that lives in your terminal. It plans, codes, tests and ships, and you can undo any change with one command.**
 
-## 📑 Table of Contents
-- [✨ Key Architectural Highlights](#-key-architectural-highlights)
-- [🔑 API Keys Setup (PowerShell Persistent Method)](#-api-keys-setup-powershell-persistent-method)
-  - [Every Supported API Key Command](#every-supported-api-key-command)
-  - [Verifying Configured Keys](#verifying-configured-keys)
-  - [Alternative: .env File](#alternative-env-file)
-- [🚀 Quickstart](#-quickstart)
-- [🤖 Multi-Agent Swarm Mode (`/plan`, `/swarm`)](#-multi-agent-swarm-mode-plan-swarm)
-- [🛡️ GitShield & Autonomous Rollbacks (`/undo`, `/diff`)](#️-gitshield--autonomous-rollbacks-undo-diff)
-- [🔍 Semantic Codebase Indexer & Search (`/index`, `/search`)](#-semantic-codebase-indexer--search-index-search)
-- [🔌 Model Context Protocol (MCP) Integration (`/mcp`)](#-model-context-protocol-mcp-integration-mcp)
-- [🌐 Live Web Dashboard (`/dashboard`)](#-live-web-dashboard-dashboard)
-- [🛠 Available Slash Commands](#-available-slash-commands)
-- [🧰 18 Autonomous Agent Tools](#-18-autonomous-agent-tools)
-- [📄 License](#-license)
+[![npm](https://img.shields.io/npm/v/ignite-agent?color=ff7a2f&label=npm&logo=npm)](https://www.npmjs.com/package/ignite-agent)
+[![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python&logoColor=white)](https://www.python.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Dependencies](https://img.shields.io/badge/Mandatory%20Dependencies-0-brightgreen.svg)](#quickstart)
+[![Architecture](https://img.shields.io/badge/Architecture-Multi--Agent%20Swarm-8a63d2.svg)](#multi-agent-swarm)
+
+[Quickstart](#quickstart) · [Swarm](#multi-agent-swarm) · [Safety](#gitshield-and-rollbacks) · [Commands](#slash-commands) · [Tools](#the-18-agent-tools) · [API keys](#api-keys)
+
+</div>
 
 ---
 
-## ✨ Key Architectural Highlights
+## Why IGNITE
 
-* **Multi-Model Priority Routing & Session Quota Guard:**  
-  Dynamically balances across Gemini, Groq, Mistral, Cohere, and OpenRouter. When a provider encounters quota exhaustion (`429`), it is automatically blocked for the active session, instantly failing over to the next healthiest provider with zero user interruption.
-* **Multi-Agent Swarm (`SwarmOrchestrator`):**  
-  Decomposes large goals into Milestone DAGs. Orchestrates **The Architect** (strategic planner), **The Engineer** (focused coder), and **The Critic** (AST & verification gatekeeper) with real-time visual kanban boards.
-* **GitShield Safety & Instant Rollback:**  
-  Automatically takes shadow snapshots before any task executes. One-command rollback (`/undo`) reverts destructive code edits cleanly.
-* **AST Pre-Flight Syntax Gatekeeper:**  
-  Every file write or patch is validated against the Python AST parser before touching disk. Syntax errors are rejected at the gate.
-* **Self-Healing Verification Loop:**  
-  Detects and executes test suites (`pytest`, `unittest`, `npm test`, compiler checks). If tests fail, it automatically captures the traceback, patches the bugs, and re-verifies.
-* **Zero-Dependency Semantic Codebase Indexer & Hybrid RAG:**  
-  Powered by SQLite FTS5 BM25 search and Python AST symbol extraction (classes, methods, docstrings). Search millions of lines in milliseconds without external vector databases.
-* **Model Context Protocol (MCP) stdio Client:**  
-  Connects directly to external MCP servers (filesystem, sqlite, github, puppeteer, etc.) over JSON-RPC 2.0.
-* **Direct Answer Auto-Coercion:**  
-  Never rejects conversational or Markdown completions as invalid JSON.
+| | |
+|---|---|
+| **Never stops on a quota error** | Routes across Gemini, Groq, Mistral, Cohere and OpenRouter. If a provider returns `429`, it is blocked for the session and the next one takes over. |
+| **Plans big goals** | A swarm of three agents (Architect, Engineer, Critic) breaks a goal into milestones and checks each one. |
+| **Safe by default** | A snapshot is saved before every task. Run `/undo` to restore it. |
+| **Catches bad code early** | Every Python write or patch is checked by the AST parser before it touches disk. |
+| **Fixes its own failures** | Runs your tests, reads the traceback, patches the bug and runs them again. |
+| **Finds things fast** | Built-in code search using SQLite FTS5 BM25 and AST symbols. No vector database needed. |
+| **Extensible** | Works as an MCP client, so it can use filesystem, SQLite, GitHub and Puppeteer servers. |
+| **Observable** | A live web dashboard shows token use, cost, processes and logs. |
 
 ---
 
-## 🔑 API Keys Setup (PowerShell Persistent Method)
+## Quickstart
 
-On Windows PowerShell, the safest, most professional way to store your API keys is using **`[Environment]::SetEnvironmentVariable(key, value, "User")`**.
+### Option 1: npm (recommended)
 
-### Why this method is recommended:
-1. **Permanence:** Stored in your Windows User Registry. Keys survive system restarts, terminal closures, and IDE reloads.
-2. **Security:** No plain text API keys are saved inside repository files or `.env` files that could be accidentally committed to GitHub.
-3. **Instant Loading:** IGNITE automatically reads these variables on startup without needing extra configuration.
-
----
-
-### Every Supported API Key Command
-
-Open PowerShell and run the commands for the providers you wish to activate:
-
-#### 1. 🌟 Google Gemini (Primary — Highly Recommended)
-Get your free API key at [Google AI Studio](https://aistudio.google.com/):
-```powershell
-[Environment]::SetEnvironmentVariable("GEMINI_API_KEY", "your_gemini_api_key_here", "User")
-```
-
-#### 2. ⚡ Google Gemini Secondary Accounts (High-Volume Quota Fallback)
-If you have additional Gemini API keys to bypass daily free tier rate limits:
-```powershell
-# Account 2
-[Environment]::SetEnvironmentVariable("GEMINI_API_KEY_2", "your_gemini_key_2_here", "User")
-
-# Account 3
-[Environment]::SetEnvironmentVariable("GEMINI_API_KEY_3", "your_gemini_key_3_here", "User")
-```
-
-#### 3. 🚀 Groq Cloud (Ultra-Fast Inference — Free Tier)
-Get your free key at [Groq Console](https://console.groq.com/):
-```powershell
-[Environment]::SetEnvironmentVariable("GROQ_API_KEY", "your_groq_api_key_here", "User")
-```
-Optional Groq secondary account:
-```powershell
-[Environment]::SetEnvironmentVariable("GROQ_API_KEY_2", "your_groq_key_2_here", "User")
-```
-
-#### 4. 🧠 Mistral AI (Codestral & Mistral Small)
-Get your key at [Mistral AI Console](https://console.mistral.ai/):
-```powershell
-[Environment]::SetEnvironmentVariable("MISTRAL_API_KEY", "your_mistral_api_key_here", "User")
-```
-
-#### 5. 🌐 Cohere (Command R+)
-Get your key at [Cohere Dashboard](https://dashboard.cohere.com/):
-```powershell
-[Environment]::SetEnvironmentVariable("COHERE_API_KEY", "your_cohere_api_key_here", "User")
-```
-
-#### 6. 🔀 OpenRouter (100+ Free & Paid Models)
-Get your key at [OpenRouter](https://openrouter.ai/):
-```powershell
-[Environment]::SetEnvironmentVariable("OPENROUTER_API_KEY", "your_openrouter_api_key_here", "User")
-```
-
----
-
-### Verifying Configured Keys
-
-After running the `SetEnvironmentVariable` commands, restart your terminal or verify that the keys are active:
-
-```powershell
-# Check individual key
-[Environment]::GetEnvironmentVariable("GEMINI_API_KEY", "User")
-
-# Or check in current session
-$env:GEMINI_API_KEY
-```
-
----
-
-### Alternative: `.env` File
-
-If you prefer using a local `.env` file instead of Windows registry variables, copy `.env.example` to `.env`:
-
-```powershell
-Copy-Item .env.example .env
-```
-Open `.env` and fill in your keys. *(Note: `.env` is already listed in `.gitignore` to prevent accidental commits).*
-
----
-
-## 🚀 Quickstart
-
-### Method 1: Global CLI via npm (Recommended)
-
-Install globally from anywhere in one command:
 ```bash
 npm install -g ignite-agent
 ```
-*(Or run immediately with zero installation: `npx ignite-agent`)*
 
-Then open any project folder and launch:
+Or run it once with no install:
+
+```bash
+npx ignite-agent
+```
+
+Then open any project folder and start it:
+
 ```bash
 ignite
 ```
 
-> **🎉 Interactive First-Time Setup Wizard:**  
-> On first launch, IGNITE automatically launches an onboarding wizard that asks for whichever API keys you have (Google Gemini, Groq, Mistral, Cohere, OpenRouter). You do **NOT** need all keys — entering just one (e.g. free Gemini or free Groq) gets you started instantly! You can re-run this setup anytime using:
-> ```bash
-> ignite setup
-> # or inside the chat:
-> IGNITE> /setup
-> ```
+On first launch, a setup wizard asks for your API keys. **You only need one** (a free Gemini or Groq key is enough). Run it again any time with `ignite setup`, or type `/setup` inside the chat.
 
----
-
-### Method 2: Clone via Git & Python
+### Option 2: from source
 
 ```bash
 git clone https://github.com/im-ignite/ignite-agent.git
@@ -169,136 +64,228 @@ pip install -r requirements.txt
 python ignite_agent.py
 ```
 
+> **Requires** Python 3.10 or newer. Git is needed for GitShield and `/diff`.
+
 ---
 
-## 🤖 Multi-Agent Swarm Mode (`/plan`, `/swarm`)
+## Multi-agent swarm
 
-When facing complex engineering goals, IGNITE activates its internal multi-agent swarm:
+For large goals, IGNITE splits the work between three agents.
 
-1. **🏛 The Architect:** Breaks down high-level objectives into 3–6 verifiable milestones with clear acceptance criteria.
-2. **👷 The Engineer:** Executes code, writes files, compiles assets, and runs tests.
-3. **🕵️ The Critic:** Performs code review, audits diffs, runs test suites, and enforces self-healing fixes before approving milestones.
-
-```text
-IGNITE> /plan build full-stack authentication system with JWT and SQLite
+```mermaid
+flowchart LR
+    A["/plan goal"] --> B["Architect<br/>3-6 milestones"]
+    B --> C["Engineer<br/>writes code, runs tests"]
+    C --> D{"Critic<br/>reviews diff and tests"}
+    D -- "fails" --> C
+    D -- "approved" --> E["Next milestone"]
+    E --> F["Done"]
 ```
 
-Toggle direct execution vs swarm mode anytime:
+| Agent | Job |
+|---|---|
+| **The Architect** | Breaks the goal into 3–6 milestones, each with clear acceptance criteria. |
+| **The Engineer** | Writes files, runs commands, builds assets and runs tests. |
+| **The Critic** | Reviews diffs, runs the test suite and sends failures back for fixes before approving a milestone. |
+
 ```text
+IGNITE> /plan build a full-stack authentication system with JWT and SQLite
+IGNITE> /swarm off     # run tasks directly, without the swarm
 IGNITE> /swarm on
-IGNITE> /swarm off
 ```
 
 ---
 
-## 🛡️ GitShield & Autonomous Rollbacks (`/undo`, `/diff`)
+## GitShield and rollbacks
 
-Never worry about AI breaking your codebase:
-- **Automatic Pre-Task Checkpointing:** Every file modification is saved into a shadow snapshot before editing.
-- **Instant Rollback:** Revert changes with one command:
-  ```text
-  IGNITE> /undo
-  ```
-- **Inspect Diffs:** Colorized unified git diffs of uncommitted changes:
-  ```text
-  IGNITE> /diff
-  ```
-- **Self-Healing Test Runner:**
-  ```text
-  IGNITE> /verify
-  ```
+Changes can always be reverted.
+
+```text
+IGNITE> /undo          # restore the pre-task snapshot
+IGNITE> /diff          # colorized diff of uncommitted changes
+IGNITE> /verify        # run the self-healing test runner
+IGNITE> /checkpoint    # save a manual snapshot
+```
+
+- **Automatic checkpoints.** A shadow snapshot is taken before any task runs.
+- **Syntax gatekeeper.** Invalid Python is rejected before it is written.
+- **Self-healing tests.** `pytest`, `unittest`, `npm test` and compiler checks are detected and run. On failure, IGNITE reads the traceback, patches the code and verifies again.
 
 ---
 
-## 🔍 Semantic Codebase Indexer & Search (`/index`, `/search`)
+## Code search
 
-Built-in zero-dependency semantic code search:
-- Indexes all project files (`.py`, `.js`, `.ts`, `.html`, `.css`, `.json`, `.yaml`, etc.) using **SQLite FTS5 BM25** ranking.
-- Extracts AST definitions (classes, functions, methods, docstrings).
-- Incremental updates in under `0.1s`.
+IGNITE indexes your project so it can find code by meaning, not just by file name.
+
+- Indexes `.py`, `.js`, `.ts`, `.html`, `.css`, `.json`, `.yaml` and more with **SQLite FTS5 BM25** ranking.
+- Extracts classes, functions, methods and docstrings from the Python AST.
+- Updates incrementally in under 0.1 seconds.
 
 ```text
-IGNITE> /index           # Incremental sync
-IGNITE> /index rebuild   # Complete re-indexing
+IGNITE> /index             # incremental sync
+IGNITE> /index rebuild     # full re-index
 IGNITE> /search verify_token
 ```
 
 ---
 
-## 🔌 Model Context Protocol (MCP) Integration (`/mcp`)
+## Model Context Protocol (MCP)
 
-Connects to standard Model Context Protocol servers over stdio:
-- Discover external tools from filesystem servers, database servers, and APIs.
-- Configure via `.ignite_mcp.json`.
+IGNITE is an MCP client. It talks to MCP servers over stdio using JSON-RPC 2.0, so you can add tools from filesystem, database and API servers.
 
 ```text
-IGNITE> /mcp init        # Create starter .ignite_mcp.json
-IGNITE> /mcp list        # List available tools across all MCP servers
-IGNITE> /mcp status      # Check connectivity of background servers
+IGNITE> /mcp init      # create a starter .ignite_mcp.json
+IGNITE> /mcp list      # list tools from all configured servers
+IGNITE> /mcp status    # check that background servers are connected
 ```
+
+Servers are configured in `.ignite_mcp.json` in your project folder.
 
 ---
 
-## 🌐 Live Web Dashboard (`/dashboard`)
+## Live dashboard
 
-IGNITE includes a built-in real-time HTTP server and web dashboard:
 ```text
 IGNITE> /dashboard
 ```
-Opens `http://localhost:7860` in your default browser, providing:
-- Real-time token consumption & estimated cost metrics.
-- Active background process status & log streams.
-- Live session history and memory inspection.
+
+Opens `http://localhost:7860` with:
+
+- Real-time token use and estimated cost
+- Background process status and log streams
+- Session history and memory inspection
 
 ---
 
-## 🛠 Available Slash Commands
+## Slash commands
 
-| Command | Action |
+| Command | What it does |
 |---|---|
-| `/plan [goal]` | Multi-Agent Swarm (Architect ➔ Engineer ➔ Critic) |
-| `/swarm [on\|off]` | Toggle Multi-Agent Swarm Mode |
-| `/index [rebuild]` | Incremental or full codebase semantic indexing |
-| `/search <query>` | Search functions, classes, and code chunks across codebase |
-| `/mcp [list\|init]` | Manage Model Context Protocol servers and tools |
-| `/undo`, `/rollback` | Revert codebase to pre-task safety checkpoint |
-| `/diff [file]` | Show colorized git diff of working tree changes |
-| `/verify [cmd]` | Run self-healing test runner / code checks |
-| `/commit [msg]` | Stage and commit all uncommitted changes |
-| `/checkpoint` | Create a manual safety restore snapshot |
-| `/dashboard`, `/ui` | Launch live Web UI on `localhost:7860` |
-| `/model [num]` | Interactive model selector (Arrow keys / 1-9) |
-| `/deploy [target]` | Automated cloud deployment (Railway, Fly, Docker, Render) |
-| `/memory` | Inspect episodic memory & context tokens |
-| `/ps`, `/kill <pid>` | Monitor and manage background subprocesses and windows |
-| `/tools` | Display all 18 available autonomous agent tools |
-| `/clear` | Clear conversation history while preserving learned episodes |
+| `/plan [goal]` | Run the swarm: Architect, then Engineer, then Critic |
+| `/swarm [on\|off]` | Turn swarm mode on or off |
+| `/index [rebuild]` | Sync or rebuild the code index |
+| `/search <query>` | Search functions, classes and code chunks |
+| `/mcp [list\|init\|status]` | Manage MCP servers and tools |
+| `/undo`, `/rollback` | Restore the pre-task snapshot |
+| `/diff [file]` | Show a colorized git diff |
+| `/verify [cmd]` | Run the self-healing test runner |
+| `/commit [msg]` | Stage and commit all changes |
+| `/checkpoint` | Save a manual snapshot |
+| `/dashboard`, `/ui` | Open the web dashboard on `localhost:7860` |
+| `/model [num]` | Pick a model (arrow keys or 1–9) |
+| `/deploy [target]` | Deploy to Railway, Fly, Docker or Render |
+| `/memory` | Inspect episodic memory and context tokens |
+| `/ps`, `/kill <pid>` | List and stop background processes |
+| `/tools` | Show all 18 agent tools |
+| `/clear` | Clear the chat but keep what it has learned |
 
 ---
 
-## 🧰 18 Autonomous Agent Tools
+## The 18 agent tools
 
-1. `terminal`: Execute PowerShell commands with live streaming output.
-2. `file_read`: Read files with line ranges and bounds.
-3. `file_write`: Write/create files with **AST syntax pre-flight gatekeeping**.
-4. `file_patch`: Apply surgical unified diffs.
-5. `git`: Full git repository management.
-6. `git_diff`: Inspect working tree modifications.
-7. `verify_code`: Self-healing automated test runner.
-8. `python_eval`: In-memory isolated Python evaluation.
-9. `spawn`: Open detached visible terminal windows or background workers.
-10. `kill`: Safely terminate processes by PID or name.
-11. `process_status`: Inspect process health and memory.
-12. `read_log`: Stream live stdout/stderr from background processes.
-13. `search`: Web search (DuckDuckGo & Bing fallback).
-14. `code_search`: Semantic hybrid BM25 + AST symbol search across project.
-15. `mcp_call`: Invoke external Model Context Protocol tools.
-16. `deploy`: Autonomous scaffolding & cloud deployment.
-17. `ask`: Pause and request decisions/credentials from user.
-18. `done`: Complete task or answer directly.
+| Tool | Purpose |
+|---|---|
+| `terminal` | Run PowerShell commands with live output |
+| `file_read` | Read files with line ranges |
+| `file_write` | Create or write files, with AST syntax check |
+| `file_patch` | Apply surgical unified diffs |
+| `git` | Full git repository management |
+| `git_diff` | Inspect working tree changes |
+| `verify_code` | Self-healing test runner |
+| `python_eval` | Evaluate Python in an isolated session |
+| `spawn` | Start background workers or visible terminal windows |
+| `kill` | Stop processes by PID or name |
+| `process_status` | Check process health and memory |
+| `read_log` | Stream stdout and stderr from background processes |
+| `search` | Web search (DuckDuckGo, with Bing fallback) |
+| `code_search` | Hybrid BM25 and AST symbol search |
+| `mcp_call` | Call external MCP tools |
+| `deploy` | Scaffold and deploy to the cloud |
+| `ask` | Pause and ask you for a decision or credential |
+| `done` | Finish the task or answer directly |
 
 ---
 
-## 📄 License
+## API keys
 
-This project is licensed under the [MIT License](LICENSE).
+You need **at least one** key. IGNITE reads keys from environment variables on startup. The setup wizard (`ignite setup`) can configure them for you.
+
+| Provider | Variable(s) | Get a key |
+|---|---|---|
+| Google Gemini (primary) | `GEMINI_API_KEY`, `GEMINI_API_KEY_2`, `GEMINI_API_KEY_3` | [Google AI Studio](https://aistudio.google.com/) |
+| Groq | `GROQ_API_KEY`, `GROQ_API_KEY_2` | [Groq Console](https://console.groq.com/) |
+| Mistral | `MISTRAL_API_KEY` | [Mistral Console](https://console.mistral.ai/) |
+| Cohere | `COHERE_API_KEY` | [Cohere Dashboard](https://dashboard.cohere.com/) |
+| OpenRouter | `OPENROUTER_API_KEY` | [OpenRouter](https://openrouter.ai/) |
+
+Extra Gemini and Groq keys are used as quota fallbacks.
+
+<details>
+<summary><b>Windows PowerShell (saved permanently)</b></summary>
+
+Keys are stored in your Windows user registry. They survive restarts and are never saved in repository files.
+
+```powershell
+[Environment]::SetEnvironmentVariable("GEMINI_API_KEY", "your_key_here", "User")
+[Environment]::SetEnvironmentVariable("GROQ_API_KEY", "your_key_here", "User")
+[Environment]::SetEnvironmentVariable("MISTRAL_API_KEY", "your_key_here", "User")
+[Environment]::SetEnvironmentVariable("COHERE_API_KEY", "your_key_here", "User")
+[Environment]::SetEnvironmentVariable("OPENROUTER_API_KEY", "your_key_here", "User")
+```
+
+Restart your terminal, then check a key:
+
+```powershell
+[Environment]::GetEnvironmentVariable("GEMINI_API_KEY", "User")
+```
+
+</details>
+
+<details>
+<summary><b>macOS / Linux</b></summary>
+
+Add to `~/.bashrc` or `~/.zshrc`:
+
+```bash
+export GEMINI_API_KEY="your_key_here"
+export GROQ_API_KEY="your_key_here"
+```
+
+Then run `source ~/.zshrc` (or open a new terminal).
+
+</details>
+
+<details>
+<summary><b>Using a .env file</b></summary>
+
+```bash
+cp .env.example .env      # PowerShell: Copy-Item .env.example .env
+```
+
+Fill in your keys in `.env`. The file is already in `.gitignore`, so it won't be committed.
+
+</details>
+
+> **Keep your keys private.** Never paste them into issues, screenshots or commits.
+
+---
+
+## Contributing
+
+Issues and pull requests are welcome. For larger changes, open an issue first so we can talk it through.
+
+1. Fork the repo and create a branch.
+2. Make your change and run `/verify` inside IGNITE (or your test suite).
+3. Open a pull request that describes what changed and why.
+
+---
+
+## License
+
+IGNITE is released under the [MIT License](LICENSE).
+
+<div align="center">
+
+If IGNITE saves you time, a star on the repo helps others find it.
+
+</div>
